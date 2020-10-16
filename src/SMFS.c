@@ -29,10 +29,10 @@ int	del(char *filename)
 int ls (char *dir)
 {
 	DIR *thisdir = opendir(dir);
-    if(!thisdir) 
-    {
-        perror(dir);
-        return 0;
+	if(!thisdir) 
+	{
+		perror(dir);
+		return 0;
     }
 
     struct dirent *ep;
@@ -41,11 +41,11 @@ int ls (char *dir)
 
     while((ep = readdir(thisdir)))
     {
-        if(strncmp(ep->d_name, ".", 1))
-        {
-            printf(GREEN "\t%s\n" WHITE, ep->d_name);
-        }
-    }
+		if(strncmp(ep->d_name, ".", 1))
+		{
+			printf(GREEN "\t%s\n" WHITE, ep->d_name);
+    	}
+	}
 
     closedir(thisdir);
     return 0;
