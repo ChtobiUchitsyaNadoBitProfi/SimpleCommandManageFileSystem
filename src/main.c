@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        printf("missing arguments\n");
+        printf("usage: ./SMFS [KEY]...\nr use key --help\n");
         return 0;
     }
 
@@ -31,6 +31,15 @@ int main(int argc, char *argv[])
             return 0;
         }
         del(argv[2]);
+    } else if (!strcmp(argv[1], "--size")) {
+        if (argc < 3)
+        {
+            fprintf(stderr, "missing arguments to 'size'\n");
+            return 0;
+        }
+        size(argv[2]);
+    } else if (!strcmp(argv[1], "--help")) {
+        help();
     }
 
     return 0;

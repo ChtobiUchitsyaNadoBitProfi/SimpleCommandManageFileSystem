@@ -2,6 +2,7 @@
 #include <dirent.h> //для работы с директориеями
 #include <string.h> //для работы со строками
 #include <sys/stat.h>
+#include <stdlib.h>
 
 #define GREEN "\x1b[32m"
 #define BLUE "\x1b[34m"
@@ -66,6 +67,39 @@ int ls(char *dir)
         }
     }
     closedir(thisdir);
+    
+    return 0;
+}
+
+int size(char *path)
+{
+    struct stat statbuf;
+    if (stat(path, &statbuf) != 0)
+    {
+        return 0;
+    }
+
+    printf("%s %ld bytes\n", path, statbuf.st_size);
+
+    return 0;
+}
+
+int help()
+{
+    printf("Использование: ./SMFS [КЛЮЧ]...\n\n"
+           "Доступные ключи:\n"
+           "--move перемещение файла\n"
+           "       (Пример: ./SMFS --move ./text.txt ./bin/text.txt)\n"
+           "--del  удаление файла\n"
+           "       (Пример: ./SMFS --del text.txt)\n"
+           "--ls   отображение всех файлов в указанной директории,\n"
+           "       если директория не указала показываются файлы из\n"
+           "       директории запуска программы\n"
+           "       (Пример: ./SMFS --ls ; ./SMFS --ls ./bin)\n"
+           "--size отображает размер файла в байта\n"
+           "       (Пример: ./SMFS --size tex.txt)\n\n"
+           "Авторы: Мельников Иван, Беседин Яков\n"
+          );
     
     return 0;
 }

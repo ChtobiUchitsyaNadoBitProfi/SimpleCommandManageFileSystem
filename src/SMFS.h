@@ -3,6 +3,9 @@
 
 int move(char *oldname, char *newname);
 int del(char *filename);
+int is_dir(char *path);
 int ls(char *dir);
+int size(char *path);   
+int help();
 
 #endif
