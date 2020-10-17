@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <dirent.h> //для работы с директориеями
 #include <string.h> //для работы со строками
+#include <sys/stat.h>
 
 #define GREEN "\x1b[32m"
 #define BLUE "\x1b[34m"
@@ -8,45 +9,63 @@
 
 int move(char *oldname, char *newname)
 {
-	if (rename(oldname, newname) == -1)
-	{
-		printf("File move error!\n");
-		return 0;
-	}
-	return 0;
+    if (rename(oldname, newname) == -1)
+    {
+        printf("File move error!\n");
+        return 0;
+    }
+    
+    return 0;
 }
 
 int	del(char *filename)
 {
-	if (remove(filename) == -1)
-	{
-		printf("File delete error!\n");
-		return 0;
-	}
-	return 0;
+    if (remove(filename) == -1)
+    {
+        printf("File delete error!\n");
+        return 0;
+    }
+    
+    return 0;
 }
 
-int ls (char *dir)
+int is_dir(char *path)
 {
-	DIR *thisdir = opendir(dir);
-	if(!thisdir) 
-	{
-		perror(dir);
-		return 0;
-	}
+    struct stat statbuf;
+    if (stat(path, &statbuf) != 0)
+    {
+        return 0;
+    }
+    
+    return S_ISDIR(statbuf.st_mode);   
+}
 
-	struct dirent *ep;
-	char newdir[512];
-	printf(BLUE "\n%s :\n" WHITE, dir);
+int ls(char *dir)
+{
+    DIR *thisdir = opendir(dir);
+    if (!thisdir) 
+    {
+        perror(dir);
+        return 0;
+    }
 
-	while((ep = readdir(thisdir)))
-	{
-		if(strncmp(ep->d_name, ".", 1))
-		{
-			printf(GREEN "\t%s\n" WHITE, ep->d_name);
-		}
-	}
+    struct dirent *ep;
+    char newdir[512];
+    printf(BLUE "%s :\n" WHITE, dir);
 
+    while (ep = readdir(thisdir))
+    {
+        if (strncmp(ep->d_name, ".", 1))
+        {
+            if (is_dir(ep->d_name))
+            {
+                printf("\t%s/\n", ep->d_name);
+            } else {
+                printf(GREEN "\t%s\n" WHITE, ep->d_name);
+            }
+        }
+    }
     closedir(thisdir);
+    
     return 0;
 }
