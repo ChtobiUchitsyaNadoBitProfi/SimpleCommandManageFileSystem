@@ -103,3 +103,30 @@ int help()
     
     return 0;
 }
+
+int copy(char *src, char *dest) 
+{
+    FILE *srcF = fopen(src, "r");
+    if (!srcF) 
+    {
+        printf("File not find!\n");
+        return 1;
+    }
+    
+    FILE *destF = fopen(dest, "w+");
+    if (!destF) 
+    {
+        printf("Init file error!\n");
+        return 1;
+    }
+
+    char c;
+    while ((c = fgetc(srcF)) != EOF) 
+    {
+        fputc(c, destF);
+    }
+    
+    fclose(srcF);
+    fclose(destF);
+    return 0;
+}

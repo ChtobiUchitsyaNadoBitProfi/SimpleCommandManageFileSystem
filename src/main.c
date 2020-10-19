@@ -40,6 +40,13 @@ int main(int argc, char *argv[])
         size(argv[2]);
     } else if (!strcmp(argv[1], "--help")) {
         help();
+    } else if (!strcmp(argv[1], "--copy")) {
+        if (argc < 4)
+        {
+            fprintf(stderr, "missing arguments to 'copy'\n");
+            return 0;
+        }
+        copy(argv[2], argv[3]);
     }
 
     return 0;

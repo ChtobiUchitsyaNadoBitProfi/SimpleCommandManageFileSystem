@@ -7,5 +7,6 @@ int is_dir(char *path);
 int ls(char *dir);
 int size(char *path);   
 int help();
+int copy(char *src, char *dest);
 
 #endif
