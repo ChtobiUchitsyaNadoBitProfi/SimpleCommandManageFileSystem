@@ -3,7 +3,7 @@
 all: SMFS
 
 SMFS: bin/main.o bin/SMFS.o
-	gcc -Wall bin/main.o bin/SMFS.o -o SMFS
+	gcc -Wall -Werror bin/main.o bin/SMFS.o -o SMFS
 
 bin/SMFS.o: src/SMFS.c
 	gcc -c src/SMFS.c -o bin/SMFS.o
