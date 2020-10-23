@@ -9,5 +9,7 @@ int size(char *path);
 void dir_size(const char *name, int *amount);
 int help();
 int copy(char *src, char *dest);
+void procfs(char *name);
+int digits_only(const char *s);
 
 #endif

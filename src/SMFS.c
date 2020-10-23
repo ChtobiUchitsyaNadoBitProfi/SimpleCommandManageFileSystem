@@ -2,6 +2,8 @@
 #include <string.h> //для работы со строками
 #include <dirent.h> //для работы с директориеями
 #include <sys/stat.h> //для получения информации о файлах
+#include <ctype.h> //для проверки строки на числа
+#include <stdlib.h> //для перевода строки в число
 #include "SMFS.h"
 
 #define GREEN "\x1b[32m"
@@ -169,4 +171,47 @@ int copy(char *src, char *dest)
     fclose(destF);
 
     return 0;
+}
+
+void procfs(char *name)
+{
+    DIR *dir;
+    struct dirent *entry;
+
+    if (!(dir = opendir(name)))
+    {
+        return;
+    }
+
+    while ((entry = readdir(dir)) != NULL)
+    {
+        if (digits_only(entry->d_name))
+        {
+            FILE *open = NULL;
+            char filename[255];
+            snprintf(filename, sizeof(filename), "%s/%s/comm", name, entry->d_name);
+            open = fopen(filename, "r");
+            fscanf(open, "%[^\n]", filename);
+            fclose(open);
+            if (atoi(entry->d_name) < 1000)
+            {
+                printf("%s\t\t%s\n", entry->d_name,filename);
+            } else {
+                printf("%s\t%s\n", entry->d_name,filename);
+            }
+        }
+    }
+}
+
+int digits_only(const char *s)
+{
+    while (*s)
+    {
+        if (isdigit(*s++) == 0)
+        {
+            return 0;
+        }
+    }
+
+    return 1;
 }

@@ -47,6 +47,9 @@ int main(int argc, char *argv[])
             return 0;
         }
         copy(argv[2], argv[3]);
+    } else if (!strcmp(argv[1], "--procfs")) {
+        printf("PID\t\tNameFile\n");
+        procfs("/proc");
     }
 
     return 0;
