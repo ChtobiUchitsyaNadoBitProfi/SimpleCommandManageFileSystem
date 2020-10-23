@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "SMFS.h"
 #include <string.h> //для работы со строками
+#include "SMFS.h"
 
 int main(int argc, char *argv[])
 {

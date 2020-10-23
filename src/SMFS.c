@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <dirent.h> //для работы с директориеями
 #include <string.h> //для работы со строками
-#include <sys/stat.h>
-#include <stdlib.h>
+#include <dirent.h> //для работы с директориеями
+#include <sys/stat.h> //для получения информации о файлах
+#include "SMFS.h"
 
 #define GREEN "\x1b[32m"
 #define BLUE "\x1b[34m"
@@ -51,7 +51,6 @@ int ls(char *dir)
     }
 
     struct dirent *ep;
-    char newdir[512];
     printf(BLUE "%s :\n" WHITE, dir);
 
     while (ep = readdir(thisdir))
@@ -79,9 +78,49 @@ int size(char *path)
         return 0;
     }
 
-    printf("%s %ld bytes\n", path, statbuf.st_size);
+    int amount = 0;
+    if (is_dir(path))
+    {
+        amount += statbuf.st_size;
+        dir_size(path, &amount);
+    } else {
+        amount = statbuf.st_size;
+    }
+    printf("%s %d bytes\n", path, amount);
 
     return 0;
+}
+
+void dir_size(const char *name, int *amount)
+{
+    DIR *dir;
+    struct dirent *entry;
+
+    if (!(dir = opendir(name)))
+    {
+        return;
+    }
+
+    while ((entry = readdir(dir)) != NULL)
+    {
+        char path[1024];
+        if (entry->d_type == DT_DIR)
+        {
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+            {
+                continue;
+            }
+            snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
+            dir_size(path, amount);
+        } else {
+            struct stat statbuf;
+            snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
+            stat(path, &statbuf);
+            *amount += statbuf.st_size;
+        }
+    }
+
+    closedir(dir);
 }
 
 int help()
@@ -128,5 +167,6 @@ int copy(char *src, char *dest)
     
     fclose(srcF);
     fclose(destF);
+
     return 0;
 }
