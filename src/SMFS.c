@@ -137,6 +137,8 @@ int help()
            "           если директория не указала показываются файлы из\n"
            "           директории запуска программы\n"
            "           (Пример: ./SMFS --ls ; ./SMFS --ls ./bin)\n"
+           "--copy    Копирование указанного файла\n"
+           "           (Пример: ./SMFS --copy Makefile bin/Makefile.txt)\n"
            "--size    Отображение размера файла или директории в байтах\n"
            "           (Пример: ./SMFS --size Makefile ; ./SMFS --size src)\n"
            "--procfs  Отображение всех процессов из файловой системы procfs\n"
@@ -191,13 +193,13 @@ void procfs(char *name)
         {
             FILE *open = NULL;
             char filename[255];
-            snprintf(filename, sizeof(filename), "%s/%s/comm", name, entry->d_name);
+            sprintf(filename, "%s/%s/comm", name, entry->d_name);
             open = fopen(filename, "r");
             fscanf(open, "%[^\n]", filename);
             fclose(open);
             if (atoi(entry->d_name) < 1000)
             {
-                printf("%s\t\t%s\n", entry->d_name,filename);
+                printf("%s\t%s\n", entry->d_name,filename);
             } else {
                 printf("%s\t%s\n", entry->d_name,filename);
             }

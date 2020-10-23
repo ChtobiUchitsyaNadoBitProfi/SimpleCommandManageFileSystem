@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        printf("usage: ./SMFS [KEY]...\nr use key --help\n");
+        printf("usage: ./SMFS [KEY]...\nOr use key --help\n");
         return 0;
     }
 
@@ -50,6 +50,8 @@ int main(int argc, char *argv[])
     } else if (!strcmp(argv[1], "--procfs")) {
         printf("PID\t\tNameFile\n");
         procfs("/proc");
+    } else {
+    	printf("usage: ./SMFS [KEY]...\nOr use key --help\n");
     }
 
     return 0;
