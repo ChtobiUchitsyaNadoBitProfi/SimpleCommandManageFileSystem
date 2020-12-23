@@ -1,0 +1,13 @@
+[Unit]
+Description=LiteSH Daemon
+
+[Service]
+Type=simple
+User=root
+# change path to programm
+ExecStart=/home/jac/CLionProjects/server/cmake-build-debug/server
+KillMode=control-group
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
